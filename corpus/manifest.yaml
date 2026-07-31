@@ -1,0 +1,167 @@
+# One entry per fixture. CI gates (plan §7): every fixture must pass official
+# XSD+Schematron (gate 1), render (gate 2), veraPDF PDF/A-3b (gate 3), and
+# match its blessed baseline raster (gate 4). Gate 1 runs in CI against the
+# specwatch-pinned artefacts; gate 3 currently checks PDF/A identification
+# (full veraPDF conformance check: wire the veraPDF CLI into CI — TODO).
+fixtures:
+  - id: "001"
+    file: fixtures/ubl/001-base-multivat.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [multi-vat, payment-credit-transfer, buyer-reference, note]
+    expected-pages: 1
+    validated-against: specwatch/lock.json  # CEN + PEPPOL sch, 0 fatal 0 warn
+  - id: "002"
+    file: fixtures/ubl/002-creditnote.xml
+    syntax: ubl-creditnote
+    profile: peppol-bis-3
+    tags: [credit-note, preceding-invoice-ref, type-381]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "003"
+    file: fixtures/ubl/003-lines-120.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [generated, multi-page, pagination, brought-forward]
+    generator: "tools/gen_fixture.py 120"
+    expected-pages: 7   # 6 -> 7: the brought-forward row reserves one line/page (overlap fix)
+    validated-against: specwatch/lock.json
+  - id: "004"
+    file: fixtures/ubl/004-reverse-charge.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [reverse-charge, vat-ae, exemption-reason, zero-tax]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "005"
+    file: fixtures/ubl/005-allowance-charge.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [doc-allowance, doc-charge, bg-20, bg-21]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "006"
+    file: fixtures/ubl/006-minimal.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [minimal, graceful-degradation, no-optionals]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "007"
+    file: fixtures/ubl/007-xrechnung-leitweg.xml
+    syntax: ubl-invoice
+    profile: xrechnung
+    tags: [xrechnung, leitweg-id, br-de, seller-contact, payment-sepa-58]
+    expected-pages: 1
+    validated-against: specwatch/lock.json  # CEN + XRechnung sch, 0 fatal 0 warn
+  - id: "008"
+    file: fixtures/ubl/008-exempt-e.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [vat-exempt, category-e, exemption-reason, domestic-de, seller-contact]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "009"
+    file: fixtures/ubl/009-zero-rated-z.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [zero-rated, category-z, no-exemption-reason, domestic-de]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "010"
+    file: fixtures/ubl/010-intra-community-k.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [intra-community, category-k, delivery-date, deliver-to-country, br-ic]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "011"
+    file: fixtures/ubl/011-export-g.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [export, category-g, non-eu-buyer, exemption-reason]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "012"
+    file: fixtures/ubl/012-prepaid.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [prepaid, bt-113, standard-vat]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "013"
+    file: fixtures/ubl/013-rounding.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [rounding, bt-114, standard-vat]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "014"
+    file: fixtures/ubl/014-diacritics.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [diacritics, cyrillic, greek, long-strings, glyph-coverage]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "017"
+    file: fixtures/ubl/017-lines-500.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [generated, stress, 500-lines, multi-page, brought-forward, heap-ceiling]
+    generator: "tools/gen_fixture.py 500"   # regenerate with PYTHONIOENCODING=utf-8
+    expected-pages: 24
+    validated-against: specwatch/lock.json
+    # Stress measurement (dev hardware, indicative — the METHOD is the reproducible
+    # part). Peak heap ~62 MB (max heap-used at G1 GC trigger, JAVA_OPTS=-Xlog:gc);
+    # cold-CLI render ~2.5s (incl. JVM start + Saxon stylesheet compile). So a
+    # 500-line / 24-page document renders in roughly 2.5s at roughly 62 MB heap —
+    # the evidence behind FAKTOREI_MAX_LINES (see Limits.java): the 10k default is a
+    # deliberately generous multiple of a comfortably-bounded working set.
+  - id: "015"
+    file: fixtures/ubl/015-out-of-scope-o.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    tags: [out-of-scope, category-o, not-subject-to-vat, exemption-reason, no-vat-id]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "101"
+    file: fixtures/cii/101-base-multivat.xml
+    syntax: cii
+    profile: en16931
+    tags: [cii, twin-of-001, equivalence]
+    twin-of: "001"
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "107"
+    file: fixtures/cii/107-xrechnung-leitweg.xml
+    syntax: cii
+    profile: xrechnung
+    tags: [cii, xrechnung, twin-of-007, equivalence]
+    twin-of: "007"
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "108"
+    file: fixtures/cii/108-exempt-e.xml
+    syntax: cii
+    profile: en16931
+    tags: [cii, vat-exempt, category-e, twin-of-008, equivalence]
+    twin-of: "008"
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "113"
+    file: fixtures/cii/113-rounding.xml
+    syntax: cii
+    profile: en16931
+    tags: [cii, rounding, bt-114, twin-of-013, equivalence]
+    twin-of: "013"
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+# Roadmap fixtures (plan Phase 0 target: ~30). Done: exemption categories
+# E/Z/K/G (008-011), AE (004); prepaid (012); rounding BT-114 (013);
+# diacritics/Cyrillic/Greek + long strings (014); category O out-of-scope (015).
+# CJK is a POLICY fixture (fixtures/policy/016-cjk.xml, outside the render-globbed
+# ubl/ dir) — the engine refuses missing-glyph content rather than emit tofu (see
+# docs/glyph-coverage.md); no baseline, NOT registered here (asserted by
+# GlyphCoverageTest + engine.yml Parity 11). Remaining:
+#   additional rounding edge cases · 500-line stress
+#   missing-everything-optional (partly 006)

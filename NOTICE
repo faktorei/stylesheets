@@ -1,0 +1,27 @@
+Faktorei — EN 16931 e-invoice rendering stylesheets
+Copyright 2026 Faktorei
+
+This product includes software developed as part of the Faktorei project
+(https://faktorei.dev), licensed under the Apache License, Version 2.0. You may
+obtain a copy of the License in the LICENSE file or at
+http://www.apache.org/licenses/LICENSE-2.0.
+
+--------------------------------------------------------------------------------
+Fonts (not vendored here)
+
+The production PDF/A-3b profile embeds Source Sans 3 and Source Code Pro
+(Copyright Adobe Systems Incorporated), licensed under the SIL Open Font License,
+Version 1.1. These font files are NOT included in this repository. Fetch them from
+the Adobe Fonts GitHub organisation (https://github.com/adobe-fonts) or Google
+Fonts into a local `fonts/` directory for embedded-font rendering, or use the
+Faktorei container, which ships them. The base-14 quickstart render requires no
+font fetch and embeds no third-party fonts.
+
+--------------------------------------------------------------------------------
+Validation artefacts (not vendored here)
+
+Official validation artefacts are fetched at build time by specwatch/pull.py and
+are NOT included in this repository. They remain the property of their respective
+publishers — OpenPeppol, CEN (EN 16931), KoSIT (XRechnung), and the ISO Schematron
+skeleton — under their own terms. The pinned sources are listed in
+specwatch/sources.yaml.

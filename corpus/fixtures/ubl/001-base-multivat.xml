@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- kontor corpus fixture 001: baseline Peppol BIS Billing 3.0 invoice.
+     Two VAT rates, buyer reference, credit-transfer payment, free-text note.
+     NOTE: hand-built for pipeline development; must pass official XSD +
+     Schematron via specwatch artefacts before being blessed (CI gate 1). -->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+  <cbc:ID>KTR-2026-0417</cbc:ID>
+  <cbc:IssueDate>2026-07-01</cbc:IssueDate>
+  <cbc:DueDate>2026-07-31</cbc:DueDate>
+  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+  <cbc:Note>Delivery per your order of 12 June 2026. Goods remain our property until paid in full.</cbc:Note>
+  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+  <cbc:BuyerReference>PO-88412</cbc:BuyerReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0088">7300010000001</cbc:EndpointID>
+      <cac:PartyName><cbc:Name>Nordkontor Supplies GmbH</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Speicherstraße 14</cbc:StreetName>
+        <cbc:CityName>Hamburg</cbc:CityName>
+        <cbc:PostalZone>20457</cbc:PostalZone>
+        <cac:Country><cbc:IdentificationCode>DE</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>DE812345678</cbc:CompanyID>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Nordkontor Supplies GmbH</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="0021">HRB 123456</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+      <cac:Contact>
+        <cbc:Name>A. Petersen</cbc:Name>
+        <cbc:ElectronicMail>billing@nordkontor.example</cbc:ElectronicMail>
+      </cac:Contact>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0106">54312780</cbc:EndpointID>
+      <cac:PartyName><cbc:Name>Van der Meer Logistiek B.V.</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Havenkade 220</cbc:StreetName>
+        <cbc:CityName>Rotterdam</cbc:CityName>
+        <cbc:PostalZone>3011 XN</cbc:PostalZone>
+        <cac:Country><cbc:IdentificationCode>NL</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>NL861234567B01</cbc:CompanyID>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Van der Meer Logistiek B.V.</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
+    <cbc:PaymentID>KTR-2026-0417</cbc:PaymentID>
+    <cac:PayeeFinancialAccount>
+      <cbc:ID>DE89370400440532013000</cbc:ID>
+      <cbc:Name>Nordkontor Supplies GmbH</cbc:Name>
+    </cac:PayeeFinancialAccount>
+  </cac:PaymentMeans>
+  <cac:PaymentTerms>
+    <cbc:Note>Payable within 30 days net. 2% discount if paid within 10 days.</cbc:Note>
+  </cac:PaymentTerms>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="EUR">651.03</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="EUR">3186.00</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">605.34</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>19</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="EUR">652.80</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">45.69</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>7</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="EUR">3838.80</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="EUR">3838.80</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="EUR">4489.83</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="EUR">4489.83</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">24</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">2148.00</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Description>Galvanised steel, EN 10346, stackable</cbc:Description>
+      <cbc:Name>Pallet cage 1200×800</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>19</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="EUR">89.50</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID>2</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">12</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">1038.00</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Description>Polypropylene, 60 L, food-safe</cbc:Description>
+      <cbc:Name>Transport crate PP-60</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>19</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="EUR">86.50</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <cac:InvoiceLine>
+    <cbc:ID>3</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="KGM">480</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">652.80</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Description>Recycled kraft, 90 g/m²</cbc:Description>
+      <cbc:Name>Packing paper roll</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>7</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="EUR">1.36</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

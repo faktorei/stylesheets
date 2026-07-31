@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labels lang="de">
+  <label key="doc.invoice">RECHNUNG</label>
+  <label key="doc.creditnote">GUTSCHRIFT</label>
+  <label key="party.billto">Rechnungsempfänger</label>
+  <label key="party.supplier">Lieferant</label>
+  <label key="party.vatid">USt-IdNr.</label>
+  <label key="meta.number">Rechnungsnr.</label>
+  <label key="meta.issued">Rechnungsdatum</label>
+  <label key="meta.due">Fällig am</label>
+  <label key="meta.reference">Ihre Referenz</label>
+  <label key="meta.leitweg">Leitweg-ID</label>
+  <label key="party.phone">Tel.</label>
+  <label key="lines.pos">Pos</label>
+  <label key="lines.item">Artikel</label>
+  <label key="lines.qty">Menge</label>
+  <label key="lines.price">Einzelpreis</label>
+  <label key="lines.vat">USt</label>
+  <label key="lines.net">Nettobetrag</label>
+  <label key="lines.broughtfwd">Übertrag</label>
+  <label key="vat.breakdown">Umsatzsteuer</label>
+  <label key="totals.net">Summe netto</label>
+  <label key="totals.allowances">Nachlässe</label>
+  <label key="totals.charges">Zuschläge</label>
+  <label key="totals.vat">Summe USt</label>
+  <label key="totals.prepaid">Vorausgezahlt</label>
+  <label key="totals.rounding">Rundung</label>
+  <label key="totals.due">Zahlbetrag</label>
+  <label key="payment.title">Zahlung</label>
+  <label key="payment.iban">IBAN</label>
+  <label key="payment.reference">Verwendungszweck</label>
+  <label key="meta.credits">Zu Rechnung</label>
+  <label key="ac.allowance">Nachlass</label>
+  <label key="ac.charge">Zuschlag</label>
+  <label key="footer.page">Seite</label>
+</labels>

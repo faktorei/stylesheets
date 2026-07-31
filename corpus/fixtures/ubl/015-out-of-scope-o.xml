@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- kontor corpus fixture 015: VAT category O (Not subject to VAT / outside scope).
+     The fussy category: BR-O family imposes ABSENCE constraints — no seller/buyer
+     VAT identifier (BR-O-09/10), exactly one VAT breakdown and no other category
+     alongside it (BR-O-11..13), exemption reason required (BR-O-14). Seller stays
+     identifiable via a legal registration id (BT-30), not a VAT id. -->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+  <cbc:ID>KTR-2026-0615</cbc:ID>
+  <cbc:IssueDate>2026-07-10</cbc:IssueDate>
+  <cbc:DueDate>2026-08-09</cbc:DueDate>
+  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+  <cbc:BuyerReference>ORD-NL-7788</cbc:BuyerReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0088">7300010000001</cbc:EndpointID>
+      <cac:PartyIdentification><cbc:ID>NK-DE-0001</cbc:ID></cac:PartyIdentification>
+      <cac:PartyName><cbc:Name>Nordkontor Beratung GmbH</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Speicherstraße 14</cbc:StreetName>
+        <cbc:CityName>Hamburg</cbc:CityName>
+        <cbc:PostalZone>20457</cbc:PostalZone>
+        <cac:Country><cbc:IdentificationCode>DE</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Nordkontor Beratung GmbH</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0088">8712345000004</cbc:EndpointID>
+      <cac:PartyName><cbc:Name>Van der Meer Techniek B.V.</cbc:Name></cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Havenkade 220</cbc:StreetName>
+        <cbc:CityName>Rotterdam</cbc:CityName>
+        <cbc:PostalZone>3011 XN</cbc:PostalZone>
+        <cac:Country><cbc:IdentificationCode>NL</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Van der Meer Techniek B.V.</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
+    <cbc:PaymentID>KTR-2026-0615</cbc:PaymentID>
+    <cac:PayeeFinancialAccount>
+      <cbc:ID>DE89370400440532013000</cbc:ID>
+      <cbc:Name>Nordkontor Beratung GmbH</cbc:Name>
+    </cac:PayeeFinancialAccount>
+  </cac:PaymentMeans>
+  <cac:PaymentTerms><cbc:Note>Payable within 30 days net.</cbc:Note></cac:PaymentTerms>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="EUR">1800.00</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>O</cbc:ID>
+        <cbc:TaxExemptionReason>Not subject to VAT — outside the scope of the VAT Directive</cbc:TaxExemptionReason>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="EUR">1800.00</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="EUR">1800.00</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="EUR">1800.00</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="EUR">1800.00</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="DAY">6</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="EUR">1800.00</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Description>Advisory services outside the scope of EU VAT</cbc:Description>
+      <cbc:Name>Regulatory advisory (out-of-scope)</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>O</cbc:ID>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="EUR">300.00</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

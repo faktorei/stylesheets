@@ -1,0 +1,46 @@
+name: ci
+# Public CI for faktorei/stylesheets — validates the corpus against the OFFICIAL
+# CEN + Peppol + KoSIT Schematron and renders every fixture to PDF.
+#
+# Visual-regression (pixel diff vs corpus/baselines/) is intentionally NOT run
+# here: reproducing the blessed baselines needs the embedded-font PDF/A toolchain
+# (the SIL-OFL fonts, fetched not vendored, + the FOP font config) that the
+# open-core split keeps in the private monorepo — which is where that gate runs.
+# Green here means exactly: the corpus validates 0-fatal/0-warning against the
+# official rules, and every fixture renders. The baselines are mirrored as
+# specimens, not re-derived in public CI.
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-and-render:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install toolchain (Saxon + FOP)
+        run: |
+          python -m pip install --upgrade pip
+          pip install saxonche pyyaml
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends fop
+
+      - name: Vendor the pinned official validation artefacts
+        run: python3 specwatch/pull.py
+
+      - name: Gate 1 — corpus validity (official CEN + Peppol + KoSIT Schematron)
+        run: python3 tools/validate.py --all
+
+      - name: Gate 2 — render every fixture to PDF
+        run: |
+          set -euo pipefail
+          n=0
+          for f in $(find corpus/fixtures -name '*.xml' | sort); do
+            python3 tools/render.py "$f" "${RUNNER_TEMP}/$(basename "$f" .xml).pdf"
+            n=$((n + 1))
+          done
+          echo "rendered $n fixtures to PDF"

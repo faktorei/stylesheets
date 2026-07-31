@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labels lang="en">
+  <label key="doc.invoice">INVOICE</label>
+  <label key="doc.creditnote">CREDIT NOTE</label>
+  <label key="party.billto">Billed to</label>
+  <label key="party.supplier">Supplier</label>
+  <label key="party.vatid">VAT ID</label>
+  <label key="meta.number">Invoice no.</label>
+  <label key="meta.issued">Issue date</label>
+  <label key="meta.due">Due date</label>
+  <label key="meta.reference">Your reference</label>
+  <label key="meta.leitweg">Leitweg-ID</label>
+  <label key="party.phone">Phone</label>
+  <label key="lines.pos">Pos</label>
+  <label key="lines.item">Item</label>
+  <label key="lines.qty">Qty</label>
+  <label key="lines.price">Unit price</label>
+  <label key="lines.vat">VAT</label>
+  <label key="lines.net">Net amount</label>
+  <label key="lines.broughtfwd">Brought forward</label>
+  <label key="vat.breakdown">VAT breakdown</label>
+  <label key="totals.net">Total net</label>
+  <label key="totals.allowances">Allowances</label>
+  <label key="totals.charges">Charges</label>
+  <label key="totals.vat">Total VAT</label>
+  <label key="totals.prepaid">Prepaid</label>
+  <label key="totals.rounding">Rounding</label>
+  <label key="totals.due">Amount due</label>
+  <label key="payment.title">Payment</label>
+  <label key="payment.iban">IBAN</label>
+  <label key="payment.reference">Payment reference</label>
+  <label key="meta.credits">Credits invoice</label>
+  <label key="ac.allowance">Discount</label>
+  <label key="ac.charge">Charge</label>
+  <label key="footer.page">Page</label>
+</labels>
