@@ -28,6 +28,10 @@ exclusively in theme attribute-sets — the contract is the header of
 `stylesheets/render/themes/ledger.xsl`; the public parameter surface is
 `stylesheets/config/params.md`.
 
+**Shipped today:** two label locales — **English and German** — and the **Ledger**
+theme (the default; further themes are in development). Additional locales (French,
+Dutch) are on the roadmap, not yet shipped.
+
 ## Quickstart
 
 ```sh
