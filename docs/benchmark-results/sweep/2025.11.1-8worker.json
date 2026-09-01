@@ -1,0 +1,42 @@
+{
+  "throughput_docs_per_hour": {
+    "median": 276047,
+    "min": 273532,
+    "max": 276614,
+    "per_core_median": 34506
+  },
+  "single_core_docs_per_hour": 118496,
+  "latency_ms": {
+    "p50": 79.0,
+    "p95": 261.0,
+    "p99": 415.0,
+    "note": "per-document render latency \u2014 a DIFFERENT quantity from throughput"
+  },
+  "corpus": {
+    "count": 10000,
+    "seed": 42,
+    "sha256": "88e6c2d1b39fca2452d0ba99a25c4e62da31abcef2256bc1345a30f1a5991b7e"
+  },
+  "image": {
+    "tag": "ghcr.io/faktorei/render:2025.11.1",
+    "digest": "sha256:f8025e739a4678ef39f2c19008a045eb7a7ba3c1ff15b96a86c5fc7935276529"
+  },
+  "workers": 8,
+  "cores_detected": 4,
+  "box": "Linode Dedicated 8 GB (4 dedicated vCPU), eu-central (Frankfurt)",
+  "license_mode": "licensed",
+  "verapdf": {
+    "profile": "3b",
+    "sampled": 200,
+    "passed": 200,
+    "failed": 0,
+    "result": "PASS"
+  },
+  "runs_wall_clock_s": [
+    131.611,
+    130.145,
+    130.413
+  ],
+  "warmup_docs": 500,
+  "timestamp": "2026-08-02T11:02:47.803069+00:00"
+}
