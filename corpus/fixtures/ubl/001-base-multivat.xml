@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 001: baseline Peppol BIS Billing 3.0 invoice.
+<!-- faktorei corpus fixture 001: baseline Peppol BIS Billing 3.0 invoice.
      Two VAT rates, buyer reference, credit-transfer payment, free-text note.
      NOTE: hand-built for pipeline development; must pass official XSD +
      Schematron via specwatch artefacts before being blessed (CI gate 1). -->

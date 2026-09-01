@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 009: VAT category Z (Zero-rated goods).
+<!-- faktorei corpus fixture 009: VAT category Z (Zero-rated goods).
      Domestic zero-rated supply; rate 0, zero tax, and (unlike E/AE/K/G) NO
      exemption reason is permitted for Z. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"

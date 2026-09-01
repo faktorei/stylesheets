@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture: generated, 500 lines (tools/gen_fixture.py 500).
+<!-- faktorei corpus fixture: generated, 500 lines (tools/gen_fixture.py 500).
      Exercises: multi-page pagination, repeating header, carry-forward totals. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
          xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"

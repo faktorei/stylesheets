@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 010: VAT category K (Intra-community supply).
+<!-- faktorei corpus fixture 010: VAT category K (Intra-community supply).
      DE seller -> FR buyer, both VAT-registered; rate 0 with BT-120 exemption
      reason, plus the K-specific BR-IC requirements: buyer VAT id, actual
      delivery date (BT-72) and deliver-to country (BT-80). -->

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 013: payable rounding amount (BT-114).
+<!-- faktorei corpus fixture 013: payable rounding amount (BT-114).
      Standard-rated invoice whose grand total is rounded down to the whole
      euro; amount due = grand total + rounding (here -0.14). Twin of CII 113. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 108: CII twin of UBL fixture 008 (VAT category E,
+<!-- faktorei corpus fixture 108: CII twin of UBL fixture 008 (VAT category E,
      exempt). Normalizes to the same semantic XML as 008 apart from si:meta
      (tools/test_equivalence.py); validate.py profile en16931-cii, 0/0. -->
 <rsm:CrossIndustryInvoice

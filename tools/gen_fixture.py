@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """faktorei · tools/gen_fixture.py — deterministic high-line-count fixture generator.
 
-Note: the emitted "<!-- kontor corpus fixture -->" comment and the "Nordkontor"
-party are intentionally NOT rebranded — they are test-data output that must stay
-byte-identical to the committed corpus fixtures (e.g. 017), which the kontor→
-faktorei rename left exempt. Change them and the committed fixtures stop
-round-tripping through this generator.
+Note: the emitted "Nordkontor Supplies GmbH" party is intentionally NOT
+rebranded — it is test-data, not branding, and must stay byte-identical to the
+committed corpus fixtures (003, 017) or they stop round-tripping through this
+generator. The HEADER COMMENT was rebranded on 2026-09-01 — it is the first
+line a visitor reads in a public fixture, so it is branding, not test data.
+Generator and fixtures must change together in ONE commit: test_gen_fixture.py
+compares against the committed blob, so it only catches a mismatch after the
+fixtures land.
 
 Emits a Peppol BIS-shaped UBL invoice with N lines and internally consistent
 arithmetic (line nets exact to 2dp; category taxable = sum of its lines; VAT
@@ -85,7 +88,7 @@ subtotals = "\n".join(f"""    <cac:TaxSubtotal>
     </cac:TaxSubtotal>""" for r in sorted(cat_taxable, reverse=True))
 
 print(f"""<?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture: generated, {N} lines (tools/gen_fixture.py {N}).
+<!-- faktorei corpus fixture: generated, {N} lines (tools/gen_fixture.py {N}).
      Exercises: multi-page pagination, repeating header, carry-forward totals. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
          xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 107: CII twin of UBL fixture 007 — identical business
+<!-- faktorei corpus fixture 107: CII twin of UBL fixture 007 — identical business
      content in CrossIndustryInvoice syntax. XRechnung 3.0 CIUS: Leitweg-ID in
      BT-10, seller contact triple, SEPA credit transfer (58). Contract: normalizes
      to the same semantic XML as 007 apart from si:meta (tools/test_equivalence.py);

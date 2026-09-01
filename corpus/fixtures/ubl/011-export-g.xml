@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 011: VAT category G (Export outside the EU).
+<!-- faktorei corpus fixture 011: VAT category G (Export outside the EU).
      DE seller -> CH (non-EU) buyer; rate 0 with BT-120 exemption reason
      (BR-G-10). No buyer VAT id required for a third-country customer. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"

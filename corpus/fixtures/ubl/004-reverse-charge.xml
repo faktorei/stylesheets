@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 004: intra-EU reverse charge (VAT category AE).
+<!-- faktorei corpus fixture 004: intra-EU reverse charge (VAT category AE).
      Exercises: zero-tax breakdown, BT-120 exemption reason rendering. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
          xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"

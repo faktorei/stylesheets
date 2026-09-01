@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 008: VAT category E (Exempt from VAT).
+<!-- faktorei corpus fixture 008: VAT category E (Exempt from VAT).
      Domestic exempt supply (educational services); zero-tax breakdown with
      BT-120 exemption reason. Twin of CII fixture 108. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"

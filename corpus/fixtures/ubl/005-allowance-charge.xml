@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 005: document-level allowance (volume discount) and
+<!-- faktorei corpus fixture 005: document-level allowance (volume discount) and
      charge (freight). Exercises: BG-20/21 itemization, BT-107/108 totals,
      taxable-amount adjustment. 2148.00 - 100.00 + 35.00 = 2083.00 -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"

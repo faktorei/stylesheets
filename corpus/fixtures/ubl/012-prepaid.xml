@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 012: prepaid amount (BT-113).
+<!-- faktorei corpus fixture 012: prepaid amount (BT-113).
      Standard-rated invoice with a deposit already paid; amount due =
      grand total - prepaid. Exercises the totals prepaid row. -->
 <Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"

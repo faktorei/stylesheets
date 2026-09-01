@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 015: VAT category O (Not subject to VAT / outside scope).
+<!-- faktorei corpus fixture 015: VAT category O (Not subject to VAT / outside scope).
      The fussy category: BR-O family imposes ABSENCE constraints — no seller/buyer
      VAT identifier (BR-O-09/10), exactly one VAT breakdown and no other category
      alongside it (BR-O-11..13), exemption reason required (BR-O-14). Seller stays

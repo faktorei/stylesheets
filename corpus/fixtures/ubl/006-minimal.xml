@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 006: minimal compliant invoice — every optional
+<!-- faktorei corpus fixture 006: minimal compliant invoice — every optional
      element absent. Exercises: graceful degradation (no due date, no payment
      means, no contact, no notes, no description). Payment terms satisfy
      BR-CO-25. -->

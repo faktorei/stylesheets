@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 002: credit note (partial credit against 001).
+<!-- faktorei corpus fixture 002: credit note (partial credit against 001).
      Exercises: CreditNote syntax, BG-3 preceding invoice reference, type 381. -->
 <CreditNote xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
             xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"

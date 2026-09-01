@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 016: CJK content — a POLICY fixture, not a render one.
+<!-- faktorei corpus fixture 016: CJK content — a POLICY fixture, not a render one.
      The embedded fonts (Source Sans 3 / Source Code Pro) have no CJK coverage, so
      the engine REFUSES this document with a "glyph coverage" error rather than
      emit tofu into a legal invoice. Asserted by GlyphCoverageTest; deliberately

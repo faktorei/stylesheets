@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- kontor corpus fixture 101: CII twin of UBL fixture 001 — identical business
+<!-- faktorei corpus fixture 101: CII twin of UBL fixture 001 — identical business
      content in CrossIndustryInvoice syntax. Contract: normalizes to the same
      semantic XML as 001 apart from si:meta (tools/test_equivalence.py). -->
 <rsm:CrossIndustryInvoice
