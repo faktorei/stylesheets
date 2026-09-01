@@ -18,6 +18,17 @@ import random
 import sys
 from decimal import Decimal, ROUND_HALF_UP
 
+# This tool writes an XML document that DECLARES UTF-8 to stdout, whose encoding
+# is platform-dependent: on a Windows console (cp1252) the German street name
+# lost its "ss" and the emitted fixture silently stopped matching the committed
+# one, while still claiming UTF-8 in its prolog. Silent corruption is worse than
+# a crash, so pin the stream.
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except (AttributeError, ValueError):
+    pass  # already UTF-8, or not a reconfigurable stream
+
+
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 120
 rng = random.Random(N)  # seed by N: deterministic per size
 C2 = Decimal("0.01")

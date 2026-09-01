@@ -24,7 +24,7 @@ Paste the minimal UBL or CII XML that reproduces the issue, or attach it:
 - [ ] UBL 2.1 Invoice
 - [ ] UBL 2.1 CreditNote
 - [ ] CII (Cross Industry Invoice, D16B)
-- Profile: <!-- Peppol BIS 3.0 / XRechnung / Factur-X / plain EN 16931 -->
+- Profile: <!-- Peppol BIS 3.0 / XRechnung / PINT A-NZ / Factur-X / plain EN 16931 -->
 
 ## Expected vs. actual
 

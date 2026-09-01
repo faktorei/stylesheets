@@ -58,3 +58,6 @@ jobs:
 
       - name: Profile deltas — applied on their profile, scoped out of the others
         run: python3 tools/test_profile.py
+
+      - name: Generated fixtures — gen_fixture.py still reproduces them byte-for-byte
+        run: python3 tools/test_gen_fixture.py

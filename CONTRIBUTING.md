@@ -15,7 +15,8 @@ report becomes a permanent corpus fixture and a regression test.
    descriptions with fictional data. Keep the *structure* that triggers the bug.
    (Our own fixtures trade as "Nordkontor Supplies GmbH" — invent your own.)
 2. Drop the file under `corpus/fixtures/ubl/` or `corpus/fixtures/cii/` with the
-   next free number and a descriptive slug (e.g. `019-multi-page-allowances.xml`).
+   next free number and a descriptive slug (e.g. `021-multi-page-allowances.xml`;
+   check `corpus/manifest.yaml` for the highest number in use).
 3. Register it in `corpus/manifest.yaml` with its validation `profile`.
 4. Run the local checks (below) and open a PR describing expected vs. actual.
 
@@ -23,10 +24,19 @@ report becomes a permanent corpus fixture and a regression test.
 
 ```sh
 pip install saxonche pyyaml && sudo apt install fop
-python3 specwatch/pull.py                     # vendor official artefacts
-python3 tools/validate.py --all               # must be 0-fatal / 0-warning
+python3 specwatch/pull.py                        # vendor official artefacts
+python3 tools/validate.py --all                  # must be 0-fatal / 0-warning
 python3 tools/render.py <your-fixture> out.pdf   # must produce a PDF
+
+# The contract gates. CI runs these on your PR, so run them first:
+python3 tools/test_equivalence.py                # UBL/CII twins normalize identically
+python3 tools/test_money.py                      # decimals per currency, separators per language
+python3 tools/test_profile.py                    # profile deltas apply and stay scoped
 ```
+
+`--pdfa` (embedded-font PDF/A-3b) additionally needs the OFL fonts, which are not
+redistributed here — see [NOTICE](NOTICE) for a copy-paste fetch. Plain
+`tools/render.py` uses FOP's base-14 fonts and needs nothing extra.
 
 Visual-regression baselines (`corpus/baselines/`) and the pixel-diff gate are
 maintained in the private monorepo, where the full toolchain (embedded fonts,
