@@ -93,6 +93,35 @@ a mismatch rather than re-vendoring silently. This is
 the credibility claim you can reproduce: **the corpus validates clean against the
 same rules a real Access Point applies.**
 
+### Don't take our word for it — break a fixture
+
+"The corpus validates clean" is worth exactly nothing if we also wrote the
+corpus. So make one invalid and watch the *official* rules catch it. Change a
+single number — the tax-inclusive total, so it no longer equals net + VAT:
+
+```sh
+python3 - <<'EOF'
+xml = open("corpus/fixtures/ubl/006-minimal.xml", encoding="utf-8").read()
+open("tampered.xml", "w", encoding="utf-8").write(
+    xml.replace('<cbc:TaxInclusiveAmount currencyID="EUR">297.50',
+                '<cbc:TaxInclusiveAmount currencyID="EUR">299.99'))
+EOF
+
+python3 tools/validate.py tampered.xml --profile peppol-bis-3-ubl
+```
+
+```
+[validate] tampered.xml vs CEN-EN16931-UBL: 2 fatal, 0 warning
+  [FATAL] BR-CO-15
+  [FATAL] BR-CO-16
+[validate] tampered.xml vs PEPPOL-EN16931-UBL: 0 fatal, 0 warning
+```
+
+BR-CO-15 and BR-CO-16 are CEN's own arithmetic rules, from the artefacts
+`specwatch/pull.py` just fetched — not ours. Nothing in this repository decides
+whether a document is valid; we only run the rules and report what they say.
+(`tampered.xml` is a throwaway — delete it.)
+
 ## The rendered product, as a container
 
 For production — deterministic **PDF/A-3b** with embedded fonts, Factur-X hybrid
