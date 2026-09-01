@@ -21,6 +21,7 @@ pages). Do not rely on this gate for sub-JND color tuning.
 from __future__ import annotations
 
 import argparse
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -35,7 +36,20 @@ DPI = 110  # pinned; balance between diff sensitivity and repo weight
 
 
 def raster_pages(pdf: Path, outdir: Path, stem: str) -> list[Path]:
-    subprocess.run(["pdftoppm", "-png", "-r", str(DPI), str(pdf), str(outdir / stem)],
+    # Resolve rather than exec the bare name, and say so plainly when it is
+    # absent: a missing rasterizer used to surface as a raw FileNotFoundError
+    # from deep inside subprocess, which reads like a bug in this tool rather
+    # than a missing dependency. (Windows also needs the resolved path when the
+    # launcher is a .BAT/.EXE shim.)
+    exe = shutil.which("pdftoppm")
+    if exe is None:
+        sys.exit(
+            "error: 'pdftoppm' was not found on PATH. The pixel gate rasterizes "
+            "PDFs with poppler: `sudo apt install poppler-utils` (Debian/Ubuntu), "
+            "`brew install poppler` (macOS), or https://poppler.freedesktop.org/. "
+            "Baselines are blessed in CI, so this gate is not required locally."
+        )
+    subprocess.run([exe, "-png", "-r", str(DPI), str(pdf), str(outdir / stem)],
                    check=True, capture_output=True)
     return sorted(outdir.glob(f"{stem}-*.png"))
 

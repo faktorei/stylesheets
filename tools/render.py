@@ -17,6 +17,7 @@ Requires: pip install saxonche · apt install fop
 from __future__ import annotations
 
 import argparse
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -97,7 +98,23 @@ def main() -> None:
             print(f"XSL-FO -> {args.output}")
             return
 
-        cmd = ["fop", "-q"]
+        # Resolve FOP rather than exec'ing the bare name. On Windows the launcher
+        # is fop.BAT: shutil.which() finds it, but CreateProcess will not run a
+        # .BAT from a bare name without a shell, so subprocess raised a bare
+        # FileNotFoundError — the FIRST command in the README, dying on a
+        # traceback even though FOP was correctly installed. Resolving the path
+        # makes Windows work; on Linux which() returns /usr/bin/fop and nothing
+        # changes.
+        fop_exe = shutil.which("fop")
+        if fop_exe is None:
+            sys.exit(
+                "error: 'fop' was not found on PATH. Apache FOP formats the PDF: "
+                "`sudo apt install fop` (Debian/Ubuntu), `brew install fop` (macOS), "
+                "or https://xmlgraphics.apache.org/fop/. The stages before the PDF "
+                "need no FOP — try --stop-at semantic or --stop-at fo. Or use "
+                "ghcr.io/faktorei/render, which ships it."
+            )
+        cmd = [fop_exe, "-q"]
         if args.pdfa:
             # fop.xconf ships everywhere, but the OFL font files it points at are
             # not redistributed here — they are fetched, or come with the render
