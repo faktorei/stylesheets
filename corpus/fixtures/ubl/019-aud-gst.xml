@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- faktorei corpus fixture 019: AUD, an Australian domestic invoice with 10%
+     GST. Two decimals like EUR, so this is the control for fixture 018: it
+     proves the currency-aware formatter still renders an ordinary two-decimal
+     currency exactly as before, and it puts a non-euro, non-European
+     jurisdiction in the corpus. Endpoint scheme 0151 is the ABN; the value is
+     a synthetic but checksum-valid number. Australia has no EU-style VAT
+     identifier, so the seller carries BT-32 + BT-30 rather than BT-31. -->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+  <cbc:ID>KTR-2026-0819</cbc:ID>
+  <cbc:IssueDate>2026-07-16</cbc:IssueDate>
+  <cbc:DueDate>2026-08-15</cbc:DueDate>
+  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>AUD</cbc:DocumentCurrencyCode>
+  <cbc:BuyerReference>AU-PO-8823</cbc:BuyerReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0151">42000000003</cbc:EndpointID>
+      <cac:PostalAddress>
+        <cbc:StreetName>14 Wharf Street</cbc:StreetName>
+        <cbc:CityName>Brisbane</cbc:CityName>
+        <cbc:PostalZone>4000</cbc:PostalZone>
+        <cbc:CountrySubentity>QLD</cbc:CountrySubentity>
+        <cac:Country><cbc:IdentificationCode>AU</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>42000000003</cbc:CompanyID>
+        <cac:TaxScheme><cbc:ID>LOCAL</cbc:ID></cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Brisbane Freight Systems Pty Ltd</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="0151">42000000003</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0151">10000000000</cbc:EndpointID>
+      <cac:PostalAddress>
+        <cbc:StreetName>88 Collins Street</cbc:StreetName>
+        <cbc:CityName>Melbourne</cbc:CityName>
+        <cbc:PostalZone>3000</cbc:PostalZone>
+        <cbc:CountrySubentity>VIC</cbc:CountrySubentity>
+        <cac:Country><cbc:IdentificationCode>AU</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Southbank Provisioning Pty Ltd</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentTerms><cbc:Note>Payable within 30 days of invoice date.</cbc:Note></cac:PaymentTerms>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="AUD">199.60</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="AUD">1996.00</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="AUD">199.60</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>10</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="AUD">1996.00</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="AUD">1996.00</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="AUD">2195.60</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="AUD">2195.60</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">8</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="AUD">1996.00</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>Insulated shipping container, 640 L</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>10</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="AUD">249.50</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

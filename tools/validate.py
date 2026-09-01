@@ -48,6 +48,19 @@ PROFILES = {
         VENDOR / "en16931-artefacts/cii/schematron/EN16931-CII-validation.sch",
         VENDOR / "xrechnung-schematron/src/validation/schematron/cii/XRechnung-CII-validation.sch",
     ],
+    # PINT A-NZ does NOT layer on the CEN EN 16931 artefacts. It is a Peppol
+    # International specialisation with its own two-layer stack: the PINT base
+    # rules (preprocessed, so no code lists to resolve) then the A-NZ
+    # jurisdiction layer. Mixing in the CEN layer would double-report and apply
+    # EU rules (BR-CO-09's VAT-prefix requirement, for one) that PINT replaces.
+    "pint-a-nz-ubl": [
+        VENDOR / "pint-aunz-billing/trn-invoice/schematron/PINT-UBL-validation-preprocessed.sch",
+        VENDOR / "pint-aunz-billing/trn-invoice/schematron/PINT-jurisdiction-aligned-rules.sch",
+    ],
+    "pint-a-nz-ubl-creditnote": [
+        VENDOR / "pint-aunz-billing/trn-creditnote/schematron/PINT-UBL-validation-preprocessed.sch",
+        VENDOR / "pint-aunz-billing/trn-creditnote/schematron/PINT-jurisdiction-aligned-rules.sch",
+    ],
 }
 
 # corpus manifest (profile, syntax-family) -> validator profile above.
@@ -56,6 +69,7 @@ MANIFEST_PROFILES = {
     ("en16931", "cii"): "en16931-cii",
     ("xrechnung", "ubl"): "xrechnung-ubl",
     ("xrechnung", "cii"): "xrechnung-cii",
+    ("pint-a-nz", "ubl"): "pint-a-nz-ubl",
 }
 
 SVRL_NS = "http://purl.oclc.org/dsdl/svrl"
@@ -123,6 +137,16 @@ def validate(doc: Path, profile: str, show_warnings: bool) -> int:
                       f"    at {f['location']}\n"
                       f"    {f['text']}")
     return fatal_count
+
+
+# Schematron messages carry curly quotes and dashes. On a Windows console
+# (cp1252) printing one raised UnicodeEncodeError and killed the validator
+# mid-report — a failure became a crash, which is the wrong failure mode.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass  # already UTF-8, or not a reconfigurable stream
 
 
 def main() -> None:

@@ -22,20 +22,51 @@ VENDOR = ROOT / "vendor"
 LOCK = ROOT / "lock.json"
 
 
-def fetch_repo_zip(repo: str, ref: str, host: str | None = None) -> zipfile.ZipFile:
-    if host:
+def fetch_bytes(src: dict) -> bytes:
+    """Fetch a source's zip. Three modes: a literal `url:`, a GitLab `host:`
+    archive, or (default) GitHub codeload at a pinned ref."""
+    if src.get("url"):
+        # Unversioned artefact published at a fixed URL — pinned by sha256
+        # rather than by ref (see the note in sources.yaml).
+        return urllib.request.urlopen(src["url"], timeout=120).read()
+    repo, ref = src["repo"], src["ref"]
+    if src.get("host"):
         # GitLab archive endpoint — same URL shape for branches and tags.
         project = repo.rsplit("/", 1)[-1]
-        url = f"https://{host}/{repo}/-/archive/{ref}/{project}-{ref}.zip"
-        data = urllib.request.urlopen(url, timeout=120).read()
-        return zipfile.ZipFile(io.BytesIO(data))
+        url = f"https://{src['host']}/{repo}/-/archive/{ref}/{project}-{ref}.zip"
+        return urllib.request.urlopen(url, timeout=120).read()
     url = f"https://codeload.github.com/{repo}/zip/refs/heads/{ref}"
     try:
-        data = urllib.request.urlopen(url, timeout=120).read()
+        return urllib.request.urlopen(url, timeout=120).read()
     except Exception:
         url = f"https://codeload.github.com/{repo}/zip/refs/tags/{ref}"
-        data = urllib.request.urlopen(url, timeout=120).read()
-    return zipfile.ZipFile(io.BytesIO(data))
+        return urllib.request.urlopen(url, timeout=120).read()
+
+
+def archive_prefix(zf: zipfile.ZipFile) -> str:
+    """The wrapper directory to strip from member names, or "" if there is none.
+
+    GitHub/GitLab archives nest everything under a single `repo-ref/` directory.
+    A plain artefact zip may not: PINT A-NZ has three top-level dirs and no
+    wrapper, so assuming namelist()[0] is the prefix would slice the front off
+    every path. Strip only when there really is exactly one top-level entry.
+    """
+    tops = {name.split("/", 1)[0] for name in zf.namelist()}
+    if len(tops) != 1:
+        return ""
+    top = tops.pop()
+    # A lone top-level FILE is not a wrapper directory.
+    if not any(n.startswith(top + "/") for n in zf.namelist()):
+        return ""
+    return top + "/"
+
+
+def source_label(name: str, src: dict) -> str:
+    if src.get("url"):
+        # ASCII only: this prints to a cp1252 console on Windows dev boxes,
+        # where a non-encodable char raises UnicodeEncodeError and kills the pull.
+        return f"{name}: {src['url']} @sha256:{src['sha256'][:12]}..."
+    return f"{name}: {src['repo']}@{src['ref']}"
 
 
 def main() -> None:
@@ -44,9 +75,27 @@ def main() -> None:
     new: dict[str, str] = {}
 
     for name, src in cfg["sources"].items():
-        print(f"[specwatch] {name}: {src['repo']}@{src['ref']}")
-        zf = fetch_repo_zip(src["repo"], src["ref"], src.get("host"))
-        prefix = zf.namelist()[0]
+        print(f"[specwatch] {source_label(name, src)}")
+        data = fetch_bytes(src)
+
+        # A source pinned by content hash rather than by ref: refuse to vendor
+        # anything but the reviewed bytes. A mismatch means upstream republished
+        # an unversioned artefact — that is a deliberate review, not a silent
+        # re-vendor, so fail hard (CI included).
+        expected = src.get("sha256")
+        if expected:
+            actual = hashlib.sha256(data).hexdigest()
+            if actual != expected:
+                sys.exit(
+                    f"[specwatch] {name}: PIN MISMATCH\n"
+                    f"  expected sha256 {expected}  (sources.yaml)\n"
+                    f"  actual   sha256 {actual}  (fetched)\n"
+                    f"  Upstream republished an unversioned artefact. Review the\n"
+                    f"  diff, then bump `sha256` for {name} in specwatch/sources.yaml."
+                )
+
+        zf = zipfile.ZipFile(io.BytesIO(data))
+        prefix = archive_prefix(zf)
         for member in zf.namelist():
             rel = member[len(prefix):]
             if not rel or member.endswith("/"):

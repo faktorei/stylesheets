@@ -156,6 +156,42 @@ fixtures:
     twin-of: "013"
     expected-pages: 1
     validated-against: specwatch/lock.json
+  - id: "018"
+    file: fixtures/ubl/018-jpy-zero-decimal.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    # JPY has no minor unit (ISO 4217), so amounts are whole yen. The renderer
+    # hard-coded two decimals in both number pictures until this fixture existed;
+    # line 2 carries a FRACTIONAL quantity, which must keep two places rather
+    # than inherit the currency's zero. Also the corpus's first non-EUR document.
+    tags: [currency, zero-decimal, jpy, non-eur, fractional-quantity, non-eu-jurisdiction]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+  - id: "019"
+    file: fixtures/ubl/019-aud-gst.xml
+    syntax: ubl-invoice
+    profile: peppol-bis-3
+    # The control for 018: AUD has two minor units like EUR, so it proves the
+    # currency-aware formatter leaves ordinary currencies untouched. Australian
+    # domestic, 10% GST, ABN endpoints (ICD 0151).
+    tags: [currency, aud, non-eur, gst, non-eu-jurisdiction]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+
+  - id: "020"
+    file: fixtures/ubl/020-pint-aunz-gst.xml
+    syntax: ubl-invoice
+    profile: pint-a-nz
+    # PINT A-NZ Billing — the corpus's SECOND national profile, which is what
+    # turns "national profiles are configuration deltas" from an assertion into
+    # a demonstrated pattern. Validated against the PINT base + A-NZ
+    # jurisdiction layers, NOT the CEN artefacts (PINT replaces them).
+    # Tax scheme is GST, which the normalizer had to be taught, and the
+    # renderer labels it GST via a profile-scoped override.
+    tags: [pint-a-nz, aud, gst, non-eur, non-eu-jurisdiction, national-profile]
+    expected-pages: 1
+    validated-against: specwatch/lock.json
+
 # Roadmap fixtures (plan Phase 0 target: ~30). Done: exemption categories
 # E/Z/K/G (008-011), AE (004); prepaid (012); rounding BT-114 (013);
 # diacritics/Cyrillic/Greek + long strings (014); category O out-of-scope (015).

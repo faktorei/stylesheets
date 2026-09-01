@@ -33,4 +33,16 @@
   <label key="ac.allowance">Nachlass</label>
   <label key="ac.charge">Zuschlag</label>
   <label key="footer.page">Seite</label>
+
+  <!-- PINT A-NZ (Australia / New Zealand) calls the tax GST. This is a
+       jurisdiction override, not a translation: the same English bundle must
+       still say VAT for a European invoice. -->
+  <label key="party.vatid@pint-a-nz">GST-Nr.</label>
+  <label key="lines.vat@pint-a-nz">GST</label>
+  <label key="vat.breakdown@pint-a-nz">GST-Aufstellung</label>
+  <label key="totals.vat@pint-a-nz">Summe GST</label>
+  <!-- BT-84 is the payment ACCOUNT identifier. It is an IBAN in SEPA, but a
+       BSB/account number in Australia and New Zealand, so the SEPA-specific
+       label is wrong there. -->
+  <label key="payment.iban@pint-a-nz">Konto</label>
 </labels>

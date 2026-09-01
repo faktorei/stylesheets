@@ -40,6 +40,33 @@ sources:
     paths:
       # whole tree: the entry .sch files include common.sch relatively
       - src/validation/schematron
+  pint-aunz-billing:
+    # PINT A-NZ Billing v1.1.2 (released 2025-11-21) — the mandatory Peppol
+    # specification for Australia & New Zealand since 15 May 2025. The older
+    # A-NZ PEPPOL BIS 3.0 extension left the network 2026-03-31; its GitHub
+    # repo (A-NZ-PEPPOL/A-NZ-PEPPOL-BIS-3.0) is now an empty README pointing
+    # here. So our peppol-bis-3 profile does NOT cover A-NZ.
+    #
+    # THE ONLY SOURCE NOT PINNED TO A RELEASE TAG. OpenPeppol publishes this as
+    # a single UNVERSIONED zip on the docs site — "1.1.2" is prose on the page,
+    # not a ref, and the URL does not change when the content does. So the pin
+    # is the zip's sha256 and pull.py HARD-FAILS on mismatch. A mismatch means
+    # upstream republished: review the artefact diff, then bump `sha256` in the
+    # same commit as any rule fallout — the same ceremony as bumping a tag.
+    # This DETECTS drift; it cannot reproduce a superseded zip. If OpenPeppol
+    # ever publishes a versioned URL, switch to it and drop the hash.
+    #
+    # Both .sch are self-contained (no include/href/.gc refs), so unlike the
+    # KoSIT source we do not need to vendor a whole tree. The .gc code lists
+    # are unused (rules are preprocessed) and common/docs is three PDFs;
+    # example/ is vendored for the same reason as peppol-bis-billing's.
+    url: https://docs.peppol.eu/poac/aunz/pint-aunz/resources.zip
+    sha256: 5750a93fe98c4e1bad1d1030f749a473d4b2c3afc5bdeb5372889804b4273d1a
+    paths:
+      - trn-invoice/schematron
+      - trn-creditnote/schematron
+      - trn-invoice/example
+      - trn-creditnote/example
 notes:
   ubl-xsd: >
     OASIS UBL 2.1 maindoc + common XSDs are vendored once (stable since 2013):

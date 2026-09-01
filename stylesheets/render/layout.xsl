@@ -33,7 +33,7 @@
 
   <xsl:param name="lang" select="'en'"/>
   <xsl:param name="logo-uri" select="''"/>
-  <xsl:param name="profile" select="'auto'"/>  <!-- auto | generic | xrechnung -->
+  <xsl:param name="profile" select="'auto'"/>  <!-- auto | generic | xrechnung | pint-a-nz -->
 
   <!-- 'auto' resolves the presentation profile from BT-24: both KoSIT URN
        generations carry '…kosit:…xrechnung…'; Peppol/Factur-X URNs never do.
@@ -42,38 +42,92 @@
       select="if ($profile ne 'auto') then $profile
               else if (contains(lower-case(string(/si:invoice/si:meta/@customization)),
                                 'xrechnung')) then 'xrechnung'
+              else if (contains(lower-case(string(/si:invoice/si:meta/@customization)),
+                                '@aunz')) then 'pint-a-nz'
               else 'generic'"/>
 
   <!-- ============ i18n ============ -->
   <xsl:variable name="labels"
       select="doc(resolve-uri(concat('../i18n/labels-', $lang, '.xml'), static-base-uri()))"/>
 
+  <!-- A label may be overridden per profile with a "<key>@<profile>" entry, which
+       wins over the bare key. Needed because some wording is a JURISDICTION
+       property, not a language one: PINT A-NZ calls the tax GST, but an
+       English-language German invoice must still say VAT — so labels-en-AU is
+       the wrong shape. Same mechanism the xrechnung profile already relies on
+       for BT-10. Falls through to the bare key, so nothing changes for profiles
+       that declare no override. -->
   <xsl:function name="k:t" as="xs:string">
     <xsl:param name="key" as="xs:string"/>
-    <xsl:sequence select="(string($labels/labels/label[@key = $key]), concat('¤', $key))[1]"/>
+    <xsl:variable name="scoped"
+        select="$labels/labels/label[@key = concat($key, '@', $profile-resolved)]"/>
+    <xsl:variable name="base" select="$labels/labels/label[@key = $key]"/>
+    <xsl:sequence select="string(($scoped, $base)[1])"/>
   </xsl:function>
 
   <!-- ============ Number formatting ============ -->
-  <xsl:decimal-format name="eu" decimal-separator="," grouping-separator="."/>
+  <!-- Separator convention is a LANGUAGE property; the number of decimal places
+       is a CURRENCY property. They were conflated: both picture strings used to
+       hard-code two decimals, so a JPY invoice rendered 1500 as "1,500.00" and a
+       three-decimal currency (BHD, KWD, OMR…) was silently truncated. The corpus
+       could not catch it — every fixture was in EUR. -->
+  <xsl:decimal-format name="eu"    decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="anglo" decimal-separator="." grouping-separator=","/>
+  <!-- French groups with a no-break space (1 500,00), not a period. It used to
+       share the German format and would have rendered "1.500,00". -->
+  <xsl:decimal-format name="fr"    decimal-separator="," grouping-separator="&#160;"/>
 
-  <xsl:function name="k:money" as="xs:string">
+  <!-- ISO 4217 minor units. The default is 2; only the exceptions are listed. -->
+  <xsl:variable name="k:zero-decimal" as="xs:string+" select="(
+      'BIF','CLP','DJF','GNF','ISK','JPY','KMF','KRW','PYG','RWF',
+      'UGX','UYI','VND','VUV','XAF','XOF','XPF')"/>
+  <xsl:variable name="k:three-decimal" as="xs:string+" select="(
+      'BHD','IQD','JOD','KWD','LYD','OMR','TND')"/>
+
+  <!-- BT-5, the document currency. Global so k:money can reach it: the function
+       is called from deep in the line and totals blocks, where the invoice root
+       is not in scope. -->
+  <xsl:variable name="currency-code" as="xs:string"
+      select="upper-case(normalize-space(string(/si:invoice/si:currency)))"/>
+  <xsl:variable name="minor-units" as="xs:integer"
+      select="if ($currency-code = $k:zero-decimal) then 0
+              else if ($currency-code = $k:three-decimal) then 3
+              else 2"/>
+
+  <!-- Grouping/decimal marks per language; decimals per currency. -->
+  <xsl:function name="k:format" as="xs:string">
     <xsl:param name="v"/>
+    <xsl:param name="places" as="xs:integer"/>
     <xsl:choose>
-      <xsl:when test="$lang = ('de', 'nl', 'fr', 'es', 'it')">
-        <xsl:sequence select="format-number(xs:decimal($v), '#.##0,00', 'eu')"/>
+      <xsl:when test="$lang = 'fr'">
+        <xsl:sequence select="format-number(xs:decimal($v),
+            concat('# ##0', if ($places = 0) then '' else concat(',', substring('000', 1, $places))), 'fr')"/>
+      </xsl:when>
+      <xsl:when test="$lang = ('de', 'nl', 'es', 'it')">
+        <xsl:sequence select="format-number(xs:decimal($v),
+            concat('#.##0', if ($places = 0) then '' else concat(',', substring('000', 1, $places))), 'eu')"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:sequence select="format-number(xs:decimal($v), '#,##0.00', 'anglo')"/>
+        <xsl:sequence select="format-number(xs:decimal($v),
+            concat('#,##0', if ($places = 0) then '' else concat('.', substring('000', 1, $places))), 'anglo')"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
 
+  <!-- Monetary amounts: decimals follow the document currency. -->
+  <xsl:function name="k:money" as="xs:string">
+    <xsl:param name="v"/>
+    <xsl:sequence select="k:format($v, $minor-units)"/>
+  </xsl:function>
+
+  <!-- Quantities are NOT money and must not inherit the currency's minor units:
+       routing them through k:money would round a quantity of 1.5 to "2" on a
+       zero-decimal invoice. Integers print bare; the rest keep two places. -->
   <xsl:function name="k:qty" as="xs:string">
     <xsl:param name="v"/>
     <xsl:sequence select="if (xs:decimal($v) = floor(xs:decimal($v)))
                           then format-number(xs:decimal($v), '0')
-                          else k:money($v)"/>
+                          else k:format($v, 2)"/>
   </xsl:function>
 
   <!-- ============ Root ============ -->

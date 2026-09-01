@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!-- faktorei FOP configuration: embedded-font, PDF/A-capable rendering.
+     Fonts ship in the repo/image (fonts/, OFL-1.1) — never resolved from the
+     host system; that pinning is a determinism requirement (plan §6). -->
+<fop version="1.0">
+  <font-base>../fonts</font-base>
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <font embed-url="SourceSans3-Regular.ttf" embedding-mode="subset">
+          <font-triplet name="SourceSans3" style="normal" weight="normal"/>
+        </font>
+        <font embed-url="SourceSans3-Bold.ttf" embedding-mode="subset">
+          <font-triplet name="SourceSans3" style="normal" weight="bold"/>
+        </font>
+        <font embed-url="SourceSans3-It.ttf" embedding-mode="subset">
+          <font-triplet name="SourceSans3" style="italic" weight="normal"/>
+        </font>
+        <font embed-url="SourceCodePro-Regular.ttf" embedding-mode="subset">
+          <font-triplet name="SourceCodePro" style="normal" weight="normal"/>
+        </font>
+        <font embed-url="SourceCodePro-Bold.ttf" embedding-mode="subset">
+          <font-triplet name="SourceCodePro" style="normal" weight="bold"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

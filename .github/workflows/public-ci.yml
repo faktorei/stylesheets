@@ -32,15 +32,29 @@ jobs:
       - name: Vendor the pinned official validation artefacts
         run: python3 specwatch/pull.py
 
-      - name: Gate 1 — corpus validity (official CEN + Peppol + KoSIT Schematron)
+      - name: Gate 1 — corpus validity (official CEN + Peppol + KoSIT + PINT A-NZ Schematron)
         run: python3 tools/validate.py --all
 
+      # fixtures/policy/ holds documents that exist to be REFUSED (016 is the
+      # CJK glyph-coverage policy fixture — see docs/glyph-coverage.md), so it is
+      # deliberately excluded here, exactly as it is upstream.
       - name: Gate 2 — render every fixture to PDF
         run: |
           set -euo pipefail
           n=0
-          for f in $(find corpus/fixtures -name '*.xml' | sort); do
+          for f in $(find corpus/fixtures/ubl corpus/fixtures/cii -name '*.xml' | sort); do
             python3 tools/render.py "$f" "${RUNNER_TEMP}/$(basename "$f" .xml).pdf"
             n=$((n + 1))
           done
           echo "rendered $n fixtures to PDF"
+
+      # The site claims "UBL = CII, proven in CI" and links here, so this repo has
+      # to actually prove it.
+      - name: Syntax equivalence — UBL/CII twins normalize identically
+        run: python3 tools/test_equivalence.py
+
+      - name: Number formatting — decimals per currency, separators per language
+        run: python3 tools/test_money.py
+
+      - name: Profile deltas — applied on their profile, scoped out of the others
+        run: python3 tools/test_profile.py

@@ -107,9 +107,15 @@
         <xsl:value-of select="cbc:EndpointID"/>
       </si:endpoint>
     </xsl:if>
-    <xsl:if test="cac:PartyTaxScheme[cac:TaxScheme/cbc:ID = 'VAT']/cbc:CompanyID">
+    <!-- BT-31. EN 16931 and Peppol BIS name the scheme 'VAT'; PINT A-NZ uses
+         'GST' for the same field (its spec says to read VAT as GST throughout).
+         Matching only 'VAT' silently dropped the seller's identifier on an A-NZ
+         invoice — the party rendered with no tax number at all. -->
+    <xsl:variable name="tax-id"
+        select="cac:PartyTaxScheme[cac:TaxScheme/cbc:ID = ('VAT', 'GST')][1]/cbc:CompanyID"/>
+    <xsl:if test="$tax-id">
       <si:vat-id>
-        <xsl:value-of select="cac:PartyTaxScheme[cac:TaxScheme/cbc:ID = 'VAT']/cbc:CompanyID"/>
+        <xsl:value-of select="$tax-id"/>
       </si:vat-id>
     </xsl:if>
     <xsl:if test="cac:PartyLegalEntity/cbc:CompanyID">

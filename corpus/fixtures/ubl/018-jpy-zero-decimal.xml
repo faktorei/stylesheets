@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- faktorei corpus fixture 018: JPY, a ZERO-DECIMAL currency (ISO 4217 minor
+     unit 0). The renderer used to hard-code two decimal places in both number
+     pictures, so this invoice would have printed 18000 as "18,000.00" — not how
+     a Japanese invoice is written. Every other fixture is in EUR, so nothing in
+     the corpus could catch it. Amounts are whole yen throughout.
+     Japan runs its own Peppol Authority; the endpoint scheme 0188 is the
+     Japanese Corporate Number. -->
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+  <cbc:ID>KTR-2026-0818</cbc:ID>
+  <cbc:IssueDate>2026-07-14</cbc:IssueDate>
+  <cbc:DueDate>2026-08-14</cbc:DueDate>
+  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>JPY</cbc:DocumentCurrencyCode>
+  <cbc:BuyerReference>JP-PO-4471</cbc:BuyerReference>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0188">5010001000001</cbc:EndpointID>
+      <cac:PostalAddress>
+        <cbc:StreetName>2-7-1 Marunouchi</cbc:StreetName>
+        <cbc:CityName>Chiyoda-ku, Tokyo</cbc:CityName>
+        <cbc:PostalZone>100-0005</cbc:PostalZone>
+        <cac:Country><cbc:IdentificationCode>JP</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <!-- Japan has no EU-style VAT identifier, so this is BT-32 (Seller tax
+           registration identifier) under a non-VAT scheme, not BT-31. Using
+           VAT here trips BR-CO-09, which demands an ISO 3166-1 country prefix.
+           BT-32 still satisfies BR-S-02 for the standard-rated breakdown. -->
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>T5010001000001</cbc:CompanyID>
+        <cac:TaxScheme><cbc:ID>LOCAL</cbc:ID></cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Marunouchi Kaiun K.K.</cbc:RegistrationName>
+        <!-- BT-30, the Japanese Corporate Number (ICD 0188). Required here by
+             BR-CO-26: with no BT-31 VAT identifier the buyer still needs a way
+             to identify the seller automatically. -->
+        <cbc:CompanyID schemeID="0188">5010001000001</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="0188">7010401000002</cbc:EndpointID>
+      <cac:PostalAddress>
+        <cbc:StreetName>1-1-2 Higashishinbashi</cbc:StreetName>
+        <cbc:CityName>Minato-ku, Tokyo</cbc:CityName>
+        <cbc:PostalZone>105-7003</cbc:PostalZone>
+        <cac:Country><cbc:IdentificationCode>JP</cbc:IdentificationCode></cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>Shiodome Busan Co., Ltd.</cbc:RegistrationName>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentTerms><cbc:Note>Payable within 30 days of invoice date.</cbc:Note></cac:PaymentTerms>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="JPY">2000</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="JPY">20000</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="JPY">2000</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>10</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="JPY">20000</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="JPY">20000</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="JPY">22000</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="JPY">22000</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="C62">12</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="JPY">18000</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>Pallet cage 1200x800, galvanised</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>10</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="JPY">1500</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+  <!-- A FRACTIONAL quantity on a zero-decimal invoice. Quantities are not
+       money: routing them through the money formatter would take the currency's
+       minor units and round 2.5 to "3". This line is the regression guard. -->
+  <cac:InvoiceLine>
+    <cbc:ID>2</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="HUR">2.5</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="JPY">2000</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>On-site handling, per hour</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>10</cbc:Percent>
+        <cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="JPY">800</cbc:PriceAmount></cac:Price>
+  </cac:InvoiceLine>
+</Invoice>

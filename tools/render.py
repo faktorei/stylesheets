@@ -99,7 +99,26 @@ def main() -> None:
 
         cmd = ["fop", "-q"]
         if args.pdfa:
-            cmd += ["-c", str(REPO / "infra/fop.xconf"), "-pdfprofile", "PDF/A-3b"]
+            # fop.xconf ships everywhere, but the OFL font files it points at are
+            # not redistributed here — they are fetched, or come with the render
+            # container. Without this check FOP fails deep in font resolution and
+            # the error reads like a FOP bug rather than a missing asset.
+            conf = REPO / "infra/fop.xconf"
+            if not conf.is_file():
+                sys.exit(f"error: --pdfa needs {conf}, which is missing.")
+            missing = [f.name for f in (
+                REPO / "fonts" / "SourceSans3-Regular.ttf",
+                REPO / "fonts" / "SourceCodePro-Regular.ttf",
+            ) if not f.is_file()]
+            if missing:
+                sys.exit(
+                    "error: --pdfa embeds Source Sans 3 and Source Code Pro (SIL OFL-1.1), "
+                    f"and fonts/ is missing {', '.join(missing)}. Those files are not "
+                    "redistributed with the stylesheets — see NOTICE for a copy-paste "
+                    "fetch, or use ghcr.io/faktorei/render, which ships them. Rendering "
+                    "without --pdfa uses FOP's base-14 fonts and needs no fetch."
+                )
+            cmd += ["-c", str(conf), "-pdfprofile", "PDF/A-3b"]
         cmd += ["-fo", str(fo), "-pdf", str(args.output)]
         result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:

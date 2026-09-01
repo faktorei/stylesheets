@@ -11,11 +11,31 @@ Fonts (not vendored here)
 
 The production PDF/A-3b profile embeds Source Sans 3 and Source Code Pro
 (Copyright Adobe Systems Incorporated), licensed under the SIL Open Font License,
-Version 1.1. These font files are NOT included in this repository. Fetch them from
-the Adobe Fonts GitHub organisation (https://github.com/adobe-fonts) or Google
-Fonts into a local `fonts/` directory for embedded-font rendering, or use the
-Faktorei container, which ships them. The base-14 quickstart render requires no
-font fetch and embeds no third-party fonts.
+Version 1.1. These font files are NOT included in this repository, so nothing here
+redistributes them.
+
+`infra/fop.xconf` IS included, and expects these five files in a `fonts/`
+directory at the repository root:
+
+    SourceSans3-Regular.ttf   SourceSans3-Bold.ttf   SourceSans3-It.ttf
+    SourceCodePro-Regular.ttf SourceCodePro-Bold.ttf
+
+They are published under exactly those names on the `release` branch of
+https://github.com/adobe-fonts/source-sans (TTF/) and
+https://github.com/adobe-fonts/source-code-pro (TTF/):
+
+    mkdir -p fonts && cd fonts
+    for f in SourceSans3-Regular SourceSans3-Bold SourceSans3-It; do
+      curl -LO "https://github.com/adobe-fonts/source-sans/raw/release/TTF/$f.ttf"
+    done
+    for f in SourceCodePro-Regular SourceCodePro-Bold; do
+      curl -LO "https://github.com/adobe-fonts/source-code-pro/raw/release/TTF/$f.ttf"
+    done
+
+Other distributions (Google Fonts among them) ship these families under different
+file names, including variable-font builds; the names above are what fop.xconf
+resolves. Alternatively use the Faktorei container, which ships the fonts. The
+base-14 quickstart render needs no font fetch and embeds no third-party fonts.
 
 --------------------------------------------------------------------------------
 Validation artefacts (not vendored here)

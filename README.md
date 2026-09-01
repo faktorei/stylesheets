@@ -1,14 +1,23 @@
 # Faktorei — EN 16931 e-invoice rendering stylesheets
 
-Open-source XSLT 3.0 / XSL-FO stylesheets that turn EN 16931 electronic invoices
-(Peppol BIS Billing 3.0, XRechnung, and the Factur-X/ZUGFeRD CII profile) into
-clean, print-ready PDF — validated 0-fatal/0-warning against the **official**
-CEN and OpenPeppol Schematron, and tracked to the semi-annual spec cycle.
+Open-source XSLT 3.0 / XSL-FO stylesheets that turn structured electronic invoices
+(Peppol BIS Billing 3.0, XRechnung, PINT A-NZ, and the Factur-X/ZUGFeRD CII
+profile) into clean, print-ready PDF — validated 0-fatal/0-warning against the
+**official** CEN, OpenPeppol, KoSIT and PINT Schematron, and tracked to the
+semi-annual spec cycle.
 
-![Specimen — an EN 16931 UBL invoice rendered by Faktorei](corpus/baselines/001-1.png)
+The semantic model is EN 16931; the network is not. Peppol now carries millions
+of participants across 100+ countries, so the corpus covers non-euro currencies
+and non-EU jurisdictions as well as European ones.
 
-*Above: `corpus/fixtures/ubl/001-base-multivat.xml` rendered by the stylesheets in
-this repo. Every PNG under `corpus/baselines/` is a blessed render of a corpus fixture.*
+| European (Peppol BIS, EUR, VAT) | Australian (PINT A-NZ, AUD, GST) |
+|---|---|
+| ![A German EN 16931 UBL invoice rendered by Faktorei](corpus/baselines/001-1.png) | ![An Australian PINT A-NZ invoice rendered by Faktorei](corpus/baselines/020-1.png) |
+| `corpus/fixtures/ubl/001-base-multivat.xml` | `corpus/fixtures/ubl/020-pint-aunz-gst.xml` |
+
+*Same renderer, same theme, same code path — the profile is a parameter. Every PNG
+under `corpus/baselines/` is a blessed render of a corpus fixture, byte-compared in
+CI on every change.*
 
 ## How it works — one renderer, every syntax
 
@@ -23,7 +32,9 @@ CII ─────┼─ normalize/*.xsl ──► semantic model ──► ren
 
 Normalizers map each input syntax onto **one** semantic vocabulary
 (`stylesheets/semantic/model.md`); the renderer consumes only that. National
-profiles (XRechnung, etc.) are configuration deltas, not forks. Styling lives
+profiles are configuration deltas, not forks — there are two, **XRechnung**
+(Germany) and **PINT A-NZ** (Australia / New Zealand), and they share every line
+of rendering logic. Styling lives
 exclusively in theme attribute-sets — the contract is the header of
 `stylesheets/render/themes/ledger.xsl`; the public parameter surface is
 `stylesheets/config/params.md`.
@@ -31,6 +42,12 @@ exclusively in theme attribute-sets — the contract is the header of
 **Shipped today:** two label locales — **English and German** — and the **Ledger**
 theme (the default; further themes are in development). Additional locales (French,
 Dutch) are on the roadmap, not yet shipped.
+
+Labels can be overridden per profile (`<key>@<profile>` in `i18n/labels-*.xml`),
+because some wording is a *jurisdiction* property rather than a language one: the
+same English bundle renders "VAT" for a European invoice and "GST" for an
+Australian one. A per-region bundle would be the wrong shape — it would corrupt
+every other profile sharing that language.
 
 ## Quickstart
 
@@ -48,9 +65,17 @@ python3 tools/render.py corpus/fixtures/ubl/001-base-multivat.xml doc.fo  --stop
 ```
 
 `tools/render.py` is the reference pipeline. The quickstart renders with FOP's
-base-14 fonts so it works with nothing but this repo. **Embedded-font PDF/A-3b**
-(the production profile — Source Sans 3 / Source Code Pro, SIL OFL) needs those
-fonts fetched locally, or simply use the container below, which ships them.
+base-14 fonts so it works with nothing but this repo.
+
+**Embedded-font PDF/A-3b** — the production profile — additionally needs Source
+Sans 3 and Source Code Pro (SIL OFL-1.1) in a `fonts/` directory. The FOP config
+that binds them, `infra/fop.xconf`, ships here; the font files do not, so nothing
+in this repo redistributes them. [NOTICE](NOTICE) has a copy-paste fetch for the
+exact five files, or use the container below, which ships them:
+
+```sh
+python3 tools/render.py corpus/fixtures/ubl/001-base-multivat.xml out.pdf --pdfa
+```
 
 ## Validate against the official artefacts
 
@@ -59,8 +84,12 @@ python3 specwatch/pull.py              # vendor the pinned official Schematron (
 python3 tools/validate.py --all        # every fixture, official CEN + Peppol + KoSIT rules
 ```
 
-The pins live in `specwatch/sources.yaml` (OpenPeppol, CEN, KoSIT, ISO skeleton),
-each at a release tag; `specwatch/lock.json` records the exact artefacts. This is
+The pins live in `specwatch/sources.yaml` — OpenPeppol, CEN, KoSIT, the ISO
+Schematron skeleton, and PINT A-NZ — and `specwatch/lock.json` records the exact
+artefacts. Four are pinned at a release tag. PINT A-NZ cannot be: OpenPeppol
+publishes it as a single *unversioned* zip whose URL does not change when the
+content does, so its pin is the archive's **sha256** and `specwatch/pull.py` fails hard on
+a mismatch rather than re-vendoring silently. This is
 the credibility claim you can reproduce: **the corpus validates clean against the
 same rules a real Access Point applies.**
 
