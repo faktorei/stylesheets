@@ -49,6 +49,12 @@ faktorei-engine batch ./in ./out --manifest ./manifest.jsonl [--lang en] [--prof
 faktorei-engine batch ./in ./out --manifest ./manifest.jsonl --resume   # continue a partial job
 ```
 
+> **`batch` is a licensed surface.** Without a license file the engine runs in
+> evaluation mode: output is watermarked and capped at 500 documents/day, and a
+> batch larger than the remaining allowance is refused at submission rather than
+> failing part-way through. That is deliberate — a half-finished batch is worse
+> than a refused one. See [faktorei.dev/pricing](https://faktorei.dev/pricing).
+
 **HTTP** — include a `manifest.jsonl` entry in the POST /batch zip and the engine
 switches to manifest mode automatically (one-shot; job defaults come from the
 `lang`/`profile` query params). Without it, every `*.xml` in the zip is rendered

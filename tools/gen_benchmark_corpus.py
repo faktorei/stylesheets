@@ -30,8 +30,21 @@ from __future__ import annotations
 import argparse
 import hashlib
 import random
+import sys
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
+
+# Windows consoles default to cp1252, and these tools print party names and paths
+# that carry non-ASCII — "Speicherstraße", an em dash, a curly quote. Printing one
+# raised UnicodeEncodeError and killed the run: `--help` alone was enough to
+# traceback. errors="replace" is correct HERE and would be wrong in gen_fixture.py
+# / csv_to_jsonl.py, whose stdout IS the artifact — there a mangled character must
+# crash rather than silently substitute.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass  # already UTF-8, or not a reconfigurable stream
 
 C2 = Decimal("0.01")
 

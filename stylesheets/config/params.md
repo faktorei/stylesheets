@@ -6,7 +6,7 @@ theme attribute-set names, which are stable per themes/ledger.xsl.
 
 | Parameter | Default | Purpose |
 |---|---|---|
-| `lang` | `en` | Label bundle: `i18n/labels-{lang}.xml`. Shipped: en, de. Also selects decimal formatting convention. |
+| `lang` | `en` | Label bundle: `i18n/labels-{lang}.xml`. Shipped: **en, de, fr, nl**. Also selects the decimal convention: `en` groups `1,234.56`; `de`/`nl` group `1.234,56`; `fr` groups with a no-break space, `1 234,56`. Dutch labels are Belgian usage (Flanders is the mandate market), which differs from Netherlands Dutch on invoice words. |
 | `logo-uri` | `''` | Image placed top-left (file URI or data: URI). When empty, the seller name renders in its place. |
 | `profile` | `auto` | Presentation profile: `auto` \| `generic` \| `xrechnung` \| `pint-a-nz`. `auto` derives from the document's BT-24 CustomizationID (any KoSIT/XRechnung URN → `xrechnung`; a PINT A-NZ URN, i.e. one containing `@aunz` → `pint-a-nz`; else `generic`). `xrechnung`: BT-10 is labeled "Leitweg-ID" and accented in the meta strip (never falls back to the order reference), and the seller contact person + phone (BR-DE-5/6/7) are shown. `pint-a-nz`: the tax is labeled **GST** rather than VAT (Australia/New Zealand wording), via the profile-scoped label override described below. Forcing a profile on a document of another kind relabels it accordingly. |
 | `theme.accent` | `#2A4B8D` | Brand accent (payment details, highlights). |
@@ -19,6 +19,8 @@ theme attribute-set names, which are stable per themes/ledger.xsl.
 
 Custom themes: import `themes/ledger.xsl`, override attribute-sets. See the
 theming contract in that file's header.
+
+<a id="profile"></a>
 
 ## Profile-scoped labels
 

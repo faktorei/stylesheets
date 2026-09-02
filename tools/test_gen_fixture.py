@@ -22,6 +22,19 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Windows consoles default to cp1252, and these tools print EN 16931 rule text,
+# party names and paths that carry non-ASCII — a curly quote, "Speicherstraße",
+# an em dash. Printing one raised UnicodeEncodeError and killed the run mid-report:
+# a finding became a traceback, which is the wrong failure mode for a tool whose
+# job is to report. errors="replace" is correct HERE and would be wrong in
+# gen_fixture.py / csv_to_jsonl.py, whose stdout IS the artifact — there a mangled
+# character must crash rather than silently substitute.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass  # already UTF-8, or not a reconfigurable stream
+
 REPO = Path(__file__).resolve().parent.parent
 
 # (N, the committed fixture that N must reproduce)
