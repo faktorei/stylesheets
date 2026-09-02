@@ -19,7 +19,8 @@
   },
   "image": {
     "tag": "ghcr.io/faktorei/render:2025.11.1",
-    "digest": "sha256:f8025e739a4678ef39f2c19008a045eb7a7ba3c1ff15b96a86c5fc7935276529"
+    "digest": "sha256:f8025e739a4678ef39f2c19008a045eb7a7ba3c1ff15b96a86c5fc7935276529",
+    "note": "measured on 2025.11.1; the render path changed in 2025.11.2 (currency-aware decimals, PINT A-NZ profile), so this figure describes a superseded image and a re-run on the reference box is outstanding \u2014 the image tag and digest above are what was actually measured"
   },
   "workers": 4,
   "cores_detected": 4,
