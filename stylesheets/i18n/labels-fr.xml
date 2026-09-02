@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  French labels.
+
+  France is not an optional market: the Loi Toubon (n° 94-665, 4 August 1994)
+  requires invoices between French-established parties to be in French, with no
+  threshold and no exemption. Wallonia requires French on the same basis. Without
+  this file the renderer cannot produce a compliant invoice for either.
+
+  SOURCING. Every term below was grounded in at least one of:
+    (a) French statutory invoicing requirements ("mentions obligatoires") — the
+        HT / TVA / TTC totals vocabulary is prescribed there, not a style choice;
+    (b) Dolibarr's fr_FR translation, community-maintained by French speakers and
+        used on production invoices at scale (Invoice=Facture, CreditNote=Avoir,
+        TotalHT=Total HT, TotalTTC=Total TTC, UnitPrice=Prix unitaire).
+
+  Terms where the obvious translation is WRONG, recorded so nobody "fixes" them:
+    * doc.creditnote  -> "AVOIR", not "note de crédit". Avoir is the French
+      commercial and accounting term; note de crédit is a calque.
+    * totals.due      -> "Net à payer". The line a French reader looks for. Note
+      it is BT-115 (after prepayments), which is exactly what net à payer means,
+      so this is a closer match than "Total TTC" (BT-112) would be.
+    * lines.broughtfwd-> "Report", the accounting term for a carried subtotal.
+
+  STILL WANTS A NATIVE REVIEW (lowest confidence first): totals.charges,
+  ac.charge, totals.rounding, payment.reference, meta.credits. These are correct
+  French but their conventional form on an invoice is less firmly attested than
+  the totals block above. The PINT A-NZ overrides at the foot are a fallback for
+  an A-NZ document rendered in French, which is an unlikely combination.
+-->
+<labels lang="fr">
+  <label key="doc.invoice">FACTURE</label>
+  <label key="doc.creditnote">AVOIR</label>
+  <label key="party.billto">Facturé à</label>
+  <label key="party.supplier">Fournisseur</label>
+  <label key="party.vatid">N° TVA</label>
+  <label key="meta.number">Facture n°</label>
+  <label key="meta.issued">Date de facturation</label>
+  <label key="meta.due">Échéance</label>
+  <label key="meta.reference">Votre référence</label>
+  <label key="meta.leitweg">Leitweg-ID</label>
+  <label key="party.phone">Tél.</label>
+  <label key="lines.pos">Pos</label>
+  <label key="lines.item">Désignation</label>
+  <label key="lines.qty">Qté</label>
+  <label key="lines.price">Prix unitaire</label>
+  <label key="lines.vat">TVA</label>
+  <label key="lines.net">Montant HT</label>
+  <label key="lines.broughtfwd">Report</label>
+  <label key="vat.breakdown">Récapitulatif TVA</label>
+  <label key="totals.net">Total HT</label>
+  <label key="totals.allowances">Remises</label>
+  <label key="totals.charges">Frais</label>
+  <label key="totals.vat">Total TVA</label>
+  <label key="totals.prepaid">Acomptes versés</label>
+  <label key="totals.rounding">Arrondi</label>
+  <label key="totals.due">Net à payer</label>
+  <label key="payment.title">Paiement</label>
+  <label key="payment.iban">IBAN</label>
+  <label key="payment.reference">Référence de paiement</label>
+  <label key="meta.credits">Avoir sur facture</label>
+  <label key="ac.allowance">Remise</label>
+  <label key="ac.charge">Frais</label>
+  <label key="footer.page">Page</label>
+
+  <!-- PINT A-NZ: the tax is GST, which is a jurisdiction property and keeps its
+       name in every language. Only the surrounding words are translated. -->
+  <label key="party.vatid@pint-a-nz">N° GST</label>
+  <label key="lines.vat@pint-a-nz">GST</label>
+  <label key="vat.breakdown@pint-a-nz">Récapitulatif GST</label>
+  <label key="totals.vat@pint-a-nz">Total GST</label>
+  <label key="payment.iban@pint-a-nz">Compte</label>
+</labels>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Dutch labels, in BELGIAN usage.
+
+  Belgium's B2B mandate has been in force since January 2026 and the invoice
+  language is set by the seller's region: Dutch in Flanders (Taaldecreet, 19 July
+  1973), French in Wallonia, German in Ostbelgien, either in Brussels. An invoice
+  in the wrong language can be held void, so this is not a convenience.
+
+  WHY BELGIAN AND NOT NETHERLANDS DUTCH. The two differ on exactly the words an
+  invoice uses. Belgian practice says "Verkoper" where the Netherlands says
+  "Leverancier", and writes the totals as "Totaal (excl. BTW)". Flanders is the
+  mandate market, so Belgian usage wins wherever the two disagree. The file still
+  renders correctly for a Netherlands reader — the terms are understood there,
+  they are simply not the first choice.
+
+  SOURCING. Grounded in (a) the Belgian statutory invoice requirements
+  ("verplichte vermeldingen"), which fix the btw vocabulary and the
+  excl./incl. btw totals; and (b) Dolibarr's nl_BE translation layered over
+  nl_NL, which is how Dolibarr itself resolves Belgian Dutch — nl_BE is a thin
+  override file, not a full translation. Terms taken from the nl_BE override
+  specifically: Verkoper, Totaal (excl. BTW), E.P., Verminderingen.
+
+  CASING OF "btw". Lowercase inside compounds (btw-nummer, btw-overzicht),
+  uppercase standing alone in the totals block (Totaal BTW) — which is what both
+  the statutory guidance and Belgian invoices in the wild do.
+
+  STILL WANTS A NATIVE REVIEW (lowest confidence first): lines.broughtfwd,
+  totals.rounding, totals.charges, meta.credits. "Overdracht" for a carried
+  subtotal is defensible and "Transport" is the older bookkeeping term; a Flemish
+  accountant should pick. The PINT A-NZ overrides are a fallback for an unlikely
+  combination and are the least attested lines here.
+-->
+<labels lang="nl">
+  <label key="doc.invoice">FACTUUR</label>
+  <label key="doc.creditnote">CREDITNOTA</label>
+  <label key="party.billto">Gefactureerd aan</label>
+  <label key="party.supplier">Verkoper</label>
+  <label key="party.vatid">Btw-nummer</label>
+  <label key="meta.number">Factuurnr.</label>
+  <label key="meta.issued">Factuurdatum</label>
+  <label key="meta.due">Vervaldatum</label>
+  <label key="meta.reference">Uw referentie</label>
+  <label key="meta.leitweg">Leitweg-ID</label>
+  <label key="party.phone">Tel.</label>
+  <label key="lines.pos">Pos</label>
+  <label key="lines.item">Omschrijving</label>
+  <label key="lines.qty">Aantal</label>
+  <label key="lines.price">Eenheidsprijs</label>
+  <label key="lines.vat">Btw</label>
+  <label key="lines.net">Bedrag excl. btw</label>
+  <label key="lines.broughtfwd">Overdracht</label>
+  <label key="vat.breakdown">Btw-overzicht</label>
+  <label key="totals.net">Totaal excl. btw</label>
+  <label key="totals.allowances">Kortingen</label>
+  <label key="totals.charges">Kosten</label>
+  <label key="totals.vat">Totaal btw</label>
+  <label key="totals.prepaid">Reeds betaald</label>
+  <label key="totals.rounding">Afronding</label>
+  <label key="totals.due">Te betalen</label>
+  <label key="payment.title">Betaling</label>
+  <label key="payment.iban">IBAN</label>
+  <label key="payment.reference">Mededeling</label>
+  <label key="meta.credits">Creditnota bij factuur</label>
+  <label key="ac.allowance">Korting</label>
+  <label key="ac.charge">Kosten</label>
+  <label key="footer.page">Pagina</label>
+
+  <!-- PINT A-NZ: GST is a jurisdiction property and keeps its name. -->
+  <label key="party.vatid@pint-a-nz">Gst-nummer</label>
+  <label key="lines.vat@pint-a-nz">Gst</label>
+  <label key="vat.breakdown@pint-a-nz">Gst-overzicht</label>
+  <label key="totals.vat@pint-a-nz">Totaal gst</label>
+  <label key="payment.iban@pint-a-nz">Rekening</label>
+</labels>

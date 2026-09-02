@@ -39,9 +39,14 @@ exclusively in theme attribute-sets — the contract is the header of
 `stylesheets/render/themes/ledger.xsl`; the public parameter surface is
 `stylesheets/config/params.md`.
 
-**Shipped today:** two label locales — **English and German** — and the **Ledger**
-theme (the default; further themes are in development). Additional locales (French,
-Dutch) are on the roadmap, not yet shipped.
+**Shipped today:** four label locales — **English, German, French and Dutch** —
+and the **Ledger** theme (the default; further themes are in development).
+
+Locale is not decoration in this domain. The Loi Toubon requires invoices between
+French parties to be in French; Belgium fixes the language by the seller's region
+(Dutch in Flanders, French in Wallonia, German in Ostbelgien) and an invoice in the
+wrong one can be held void. `tools/test_locale.py` gates every shipped locale for
+completeness and for actually rendering.
 
 Labels can be overridden per profile (`<key>@<profile>` in `i18n/labels-*.xml`),
 because some wording is a *jurisdiction* property rather than a language one: the

@@ -20,7 +20,7 @@
   "image": {
     "tag": "ghcr.io/faktorei/render:2025.11.1",
     "digest": "sha256:f8025e739a4678ef39f2c19008a045eb7a7ba3c1ff15b96a86c5fc7935276529",
-    "note": "measured on 2025.11.1; the render path changed in 2025.11.2 (currency-aware decimals, PINT A-NZ profile), so this figure describes a superseded image and a re-run on the reference box is outstanding \u2014 the image tag and digest above are what was actually measured"
+    "note": "measured on 2025.11.1. The render path changed once since, at 2025.11.2 (currency-aware decimal places, PINT A-NZ profile, GST labels) and has been byte-stable through 2025.11.3 -- verified: a licensed render of fixture 001 is identical on 2025.11.2 and 2025.11.3 (sha256 632e5766a5541973), because 2025.11.3 changed licence enforcement only. So this figure was produced by a DIFFERENT render path from the current image, and the throughput effect of that change is unmeasured -- the extra per-document currency and profile lookups are not free, and we will not guess the direction or size. A re-run on the reference box is outstanding. The tag and digest above are what was actually measured."
   },
   "workers": 4,
   "cores_detected": 4,

@@ -74,7 +74,12 @@
   <xsl:decimal-format name="eu"    decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="anglo" decimal-separator="." grouping-separator=","/>
   <!-- French groups with a no-break space (1 500,00), not a period. It used to
-       share the German format and would have rendered "1.500,00". -->
+       share the German format and would have rendered "1.500,00".
+       The PICTURE must use the same U+00A0 the format declares. With a plain
+       U+0020 there, Saxon raises "Passive character must not appear between
+       active characters in a sub-picture" and every French render dies. That sat
+       here undetected because no fixture rendered in French until the French
+       locale landed; a French fixture now exercises it. -->
   <xsl:decimal-format name="fr"    decimal-separator="," grouping-separator="&#160;"/>
 
   <!-- ISO 4217 minor units. The default is 2; only the exceptions are listed. -->
@@ -101,7 +106,7 @@
     <xsl:choose>
       <xsl:when test="$lang = 'fr'">
         <xsl:sequence select="format-number(xs:decimal($v),
-            concat('# ##0', if ($places = 0) then '' else concat(',', substring('000', 1, $places))), 'fr')"/>
+            concat('#&#160;##0', if ($places = 0) then '' else concat(',', substring('000', 1, $places))), 'fr')"/>
       </xsl:when>
       <xsl:when test="$lang = ('de', 'nl', 'es', 'it')">
         <xsl:sequence select="format-number(xs:decimal($v),
