@@ -197,7 +197,7 @@ differ with hardware — that is the point of publishing the box and per-core nu
 ## 7 · Published result
 
 *Transcribed from the machine-readable artifact
-[`benchmark-results/2025.11.1.json`](benchmark-results/2025.11.1.json). This section
+[`benchmark-results/2025.11.5.json`](benchmark-results/2025.11.5.json). This section
 is hand-written markdown, so **if it and the artifact ever disagree, the artifact
 wins** — and the always-current rendering is
 [faktorei.dev/benchmark](https://faktorei.dev/benchmark), which interpolates every
@@ -207,48 +207,72 @@ more honest than denying it.) Reproduce and compare via §6.*
 
 | | |
 |---|---|
-| **Image** | `ghcr.io/faktorei/render:2025.11.1` · `sha256:f8025e73…` |
+| **Image** | `ghcr.io/faktorei/render:2025.11.5` · `sha256:815b89a9…` |
 | **Box** | Linode Dedicated 8 GB — **4 dedicated vCPU**, eu-central (Frankfurt) |
 | **Corpus** | 10,000 distinct invoices · seed `42` · sha256 `88e6c2d1…` |
-| **Conformance** | licensed (no watermark) · **veraPDF-3b PASS** (200/200 sampled) · 2026-08-02 |
+| **Conformance** | licensed (no watermark) · **veraPDF-3b PASS** (200/200 sampled) · 2026-09-07 |
 
-### 292,826 conformant PDF/A-3b invoices per hour
+### 167,636 conformant PDF/A-3b invoices per hour
 
 on **4 dedicated vCPU** — the median of 5 timed runs over the full 10,000-invoice
 corpus (not best-of; range disclosed).
 
 | metric | value |
 |---|---|
-| **Throughput** (median of 5) | **292,826 docs/hour** — min 289,269 · max 295,411 |
-| Per core, sustained at full width | 73,206 docs/hour/core |
-| Single core (`workers=1`) | 120,045 docs/hour |
-| **Latency** p50 / p95 / p99 | 36 ms / 121 ms / 180 ms |
+| **Throughput** (median of 5) | **167,636 docs/hour** — min 164,738 · max 172,490 |
+| Per core, sustained at full width | 41,909 docs/hour/core |
+| Single core (`workers=1`) | 77,568 docs/hour |
+| **Latency** p50 / p95 / p99 | 61 ms / 215 ms / 349 ms |
 
-Per-run wall-clock over the 10k corpus: 122.7 / 124.2 / 121.9 / 122.9 / 124.5 s.
+Per-run wall-clock over the 10k corpus: 208.7 / 218.5 / 217.1 / 214.8 / 211.7 s.
 Latency is per-*document* render time — a different quantity from throughput (§3);
 the p99 tail is dominated by the 5 % large invoices.
 
-**The absolute number is hardware-bound.** The superseded `2025.11.0` run measured
-**194,347** on a box of the *same* Linode plan with a byte-identical render path —
-+51% aggregate / +33% single-core between two instances of "Dedicated 4 vCPU". Both
-rows stay published. Size against per-core measurements on your own silicon (§4);
-the invariants worth holding us to are the methodology, the corpus hash, the image
-digest and the veraPDF result.
+**This figure is 43% below the previous row, and that is the hardware.** We have now
+measured three instances of the *same* "Dedicated 4 vCPU" plan and got three
+different numbers — 194,347 (`2025.11.0`), 292,826 (`2025.11.1`), 167,636
+(`2025.11.5`) — a 1.74× spread on a plan name. Unlike the earlier pair, this one is
+*not* left as an inference: the software was ruled out directly by running the
+`2025.11.1`, `.3` and `.5` images **on one identical host**, where all three landed
+within ~3% of each other. So the `2025.11.2` render-path change (currency-aware
+decimals, PINT A-NZ profile, GST labels) costs nothing measurable, and the earlier
+row's open caveat — which explicitly refused to guess that change's direction or
+size — is now answered rather than quietly dropped. All three rows stay published.
+Size against per-core measurements on your own silicon (§4); the invariants worth
+holding us to are the methodology, the corpus hash, the image digest and the veraPDF
+result — *not* the absolute figure.
 
-**The per-core number, read honestly.** Four cores deliver 293k/hour, but one core
-alone does 120k/hour — so scaling is ~2.4×, not 4×. We publish both figures precisely
-so an "N/hour/core" claim can't do quiet marketing work: **73,206/hour/core** is the
-sustained rate with all four cores busy; **120,045** is what a single core does
+**The per-core number, read honestly.** Four cores deliver 168k/hour, but one core
+alone does 78k/hour — so scaling is ~2.2×, not 4×. We publish both figures precisely
+so an "N/hour/core" claim can't do quiet marketing work: **41,909/hour/core** is the
+sustained rate with all four cores busy; **77,568** is what a single core does
 uncontended.
 
 ### Where the scaling gap actually is (serial-fraction diagnosis)
 
 The gap is a **serialized fraction of the render path**. Measured across 1/2/4/8
-workers on a dedicated box, the speedup curve is 1.00× / 1.79× / 2.44× / 2.30× — an
-Amdahl fit puts the serial fraction near **~21%**, so the ceiling is ~4.7× no matter
-how many cores you add. The 8-worker point *regresses*: past the core count more
-workers is contention, not speedup. We chased the obvious suspects rather than leave
-it a hand-wave:
+workers on this box, the speedup curve is **1.00× / 1.70× / 2.16× / 1.93×** — an
+Amdahl fit at the peak puts the serial fraction near **~28%**, so the ceiling is
+~3.5× no matter how many cores you add. The 8-worker point *regresses*: past the
+core count more workers is contention, not speedup.
+
+**Quote that fraction from the current artifact, not from memory — it moves with the
+hardware.** We now have two *full* sweeps, each run on the box that produced its own
+headline, with software that measures identical between them (§7 opening):
+
+| | 1 → 2 → 4 → 8 workers | serial fraction | headline |
+|---|---|---|---|
+| `2025.11.1` box | 1.00× / 1.79× / 2.44× / 2.30× | ~21% | 292,826/h |
+| `2025.11.5` box | 1.00× / 1.70× / 2.16× / 1.93× | ~28% | 167,636/h |
+
+That is a like-for-like comparison — same corpus, same methodology, same render path
+— so the gap between those two rows is **silicon**, and it moves the scaling story
+as well as the absolute number. The slower box is also the *less* scalable one, and
+its 8-worker point falls off harder. Never pair a curve from one row with a headline
+from the other: they are only jointly meaningful when they come from one die.
+
+What does carry across boxes is the diagnosis, because we chased the obvious suspects
+rather than leave it a hand-wave:
 
 - **It is *not* the synchronized Fop setup.** `FopFactoryHolder.newFop` is
   `synchronized` — but that lock exists to fix an observed FOP factory-setup race
@@ -259,8 +283,8 @@ it a hand-wave:
 - **It is *not* GC.** ZGC changes nothing; ParallelGC buys ~10% (within run-to-run
   noise). The allocation rate isn't what's serializing us.
 
-The residual ~21% lives inside the Saxon/FOP render internals themselves. Isolating
-and lifting that specific hotspot is a **named post-launch optimization target** —
+The residual lives inside the Saxon/FOP render internals themselves. Isolating and
+lifting that specific hotspot is a **named post-launch optimization target** —
 tracked, bounded, and honestly disclosed here rather than dressed up as headroom we
 already understand. The headline number stands on its own measured merits; this is
 the ceiling above it, diagnosed.

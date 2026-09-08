@@ -60,8 +60,21 @@ sources:
     # KoSIT source we do not need to vendor a whole tree. The .gc code lists
     # are unused (rules are preprocessed) and common/docs is three PDFs;
     # example/ is vendored for the same reason as peppol-bis-billing's.
+    #
+    # PIN HISTORY (this is why the hash is here — it has already earned its keep):
+    #   5750a93f… -> 277206b6…  bumped 2026-09-07. Upstream republished silently:
+    #     same URL, same 27 files, no version bump on the page, and it happened
+    #     WITHIN A SINGLE DAY (a pull.py run that morning matched the old hash).
+    #     Reviewed diff: only PINT-UBL-validation-preprocessed .sch/.xslt changed
+    #     (invoice + creditnote are identical copies). Substantive, not a repack —
+    #     ANG and BGN dropped from the ibr-cl-03/04/05 currency lists and XCG
+    #     added (both genuine ISO 4217 retirements: BGN on Bulgaria's euro entry,
+    #     ANG superseded by XCG); ibr-126 loosened to exempt
+    #     ancestor::cac:ItemPriceExtension from the currency-match rule; ibr-sr-45
+    #     (due date max once) removed. Corpus impact: none — validate.py --all
+    #     stayed 0 fatal / 0 warning and no fixture uses ANG or BGN.
     url: https://docs.peppol.eu/poac/aunz/pint-aunz/resources.zip
-    sha256: 5750a93fe98c4e1bad1d1030f749a473d4b2c3afc5bdeb5372889804b4273d1a
+    sha256: 277206b650f22689b6f71de38e7e92619de315625910efb3fd89a4d1e039ea5d
     paths:
       - trn-invoice/schematron
       - trn-creditnote/schematron
