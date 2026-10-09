@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Email **hello@faktorei.dev** with a subject line starting `SECURITY:`. Please
+Email **security@faktorei.dev**. Please
 include the input document (anonymised), the command or request, the image tag or
 stylesheet commit, and what you observed. You will get a human reply within two
 business days (Brisbane time) and a fix or a mitigation plan within 14 days for
