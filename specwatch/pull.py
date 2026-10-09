@@ -10,6 +10,7 @@ genericode, human-readable change reports — is the Phase 0/ongoing track.
 import hashlib
 import io
 import json
+import re
 import sys
 import urllib.request
 import zipfile
@@ -34,6 +35,13 @@ def fetch_bytes(src: dict) -> bytes:
         # GitLab archive endpoint — same URL shape for branches and tags.
         project = repo.rsplit("/", 1)[-1]
         url = f"https://{src['host']}/{repo}/-/archive/{ref}/{project}-{ref}.zip"
+        return urllib.request.urlopen(url, timeout=120).read()
+    # A 40-hex ref is a commit: pin it directly. Needed because OpenPeppol
+    # publishes releases on docs.peppol.eu WITHOUT tagging GitHub (3.0.21, May
+    # 2026, lived only on the 2026-Q2-QA2 branch). A branch name is mutable, so
+    # the pin is the commit whose artefacts are byte-identical to the live site.
+    if re.fullmatch(r"[0-9a-f]{40}", ref):
+        url = f"https://codeload.github.com/{repo}/zip/{ref}"
         return urllib.request.urlopen(url, timeout=120).read()
     url = f"https://codeload.github.com/{repo}/zip/refs/heads/{ref}"
     try:
